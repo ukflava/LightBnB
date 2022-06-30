@@ -136,13 +136,13 @@ exports.getAllReservations = getAllReservations;
 const getAllProperties = (options, limit = 10) => {
     // 1
     const queryParams = [];
-    console.log(options)
+    console.log(Object.values(options))
     // 2
     let queryString = `
     SELECT properties.*, avg(property_reviews.rating) as average_rating
     FROM properties
     JOIN property_reviews ON properties.id = property_id
-    `;
+        `;
   
     // 3
     if (options.city) {
@@ -161,9 +161,9 @@ const getAllProperties = (options, limit = 10) => {
       queryParams.push(`${options.minimum_rating}`);
       queryString += `AND rating >= $${queryParams.length} `;
     }
-    if (options.minimum_rating) {
-      queryParams.push(`${options.minimum_rating}`);
-      queryString += `AND rating >= $${queryParams.length} `;
+    if (options.owner_id) {
+      queryParams.push(`${options.owner_id}`);
+      queryString += `AND owner_id = $${queryParams.length} `;
     }
 
     // 4
@@ -195,7 +195,7 @@ exports.getAllProperties = getAllProperties;
  */
 const addProperty = function(property) {
   const queryParams = Object.values(property);
-    console.log(property)
+    // console.log(property)
     // 2
     let queryString = `
     INSERT INTO properties (
@@ -203,7 +203,7 @@ const addProperty = function(property) {
       VALUES ( $14, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13
       ) RETURNING *;`;
 
-console.log(queryParams)
+// console.log(queryParams)
     return pool.query(queryString, queryParams).then((res) => res.rows);
 }
 exports.addProperty = addProperty;
