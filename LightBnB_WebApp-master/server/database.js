@@ -136,7 +136,7 @@ exports.getAllReservations = getAllReservations;
 const getAllProperties = (options, limit = 10) => {
     // 1
     const queryParams = [];
-    // console.log(Object.values(options))
+    console.log(Object.values(options))
     // 2
     let queryString = `
     SELECT properties.*, avg(property_reviews.rating) as average_rating
@@ -163,7 +163,7 @@ const getAllProperties = (options, limit = 10) => {
     // }
     if (options.owner_id) {
       queryParams.push(`${options.owner_id}`);
-      queryString += `AND owner_id = $${queryParams.length} `;
+      queryString += `WHERE owner_id = $${queryParams.length} `;
     }
 
     // 4
